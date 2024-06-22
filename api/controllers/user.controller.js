@@ -5,3 +5,7 @@ export const test=('/test', (req,res)=>{
         message:'API route is working!!!',
     });
 });
+
+export const updateUser = async(req,res,next) =>{
+
+};
