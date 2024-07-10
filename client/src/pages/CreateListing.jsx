@@ -1,7 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import{
+  getDownloadURL,
+  getStorage,
+  ref,uploadBytesResumable,
+} from 'firebase/storage';
+import {app} from '../firebase';
 
 export default function CreateListing() {
   const [files,setfiles]= useState([]);
+  const [Formdata, setFormdata] = useState({
+    imageUrls:[],
+  });
    console.log (files);
   const handleImageSubmit= async(e) =>{
        if(files.length>0 && files.length<7){
@@ -10,6 +19,9 @@ export default function CreateListing() {
         for(let i =0; i<files.length; i++){
           promises.push(storeImage(files[1]));
         }
+        promises.all(promises).then((urls)=>{
+             setFormdata({...Formdata,imageUrls:urls});
+        })
 
 
        }
@@ -22,6 +34,17 @@ export default function CreateListing() {
       const fileName = new Date().getTime() + file.name;
       const storageRef = ref(storage,fileName);
       const uploadTask = uploadBytesResumable(storageRef,file);
+      uploadTask.on(
+        "State Changed",
+        (error)=>{
+          reject(error);
+        },
+        ()=>{
+          getDownloadURL(uploadTask.snapshot.ref).then((DownloadURL)=>{
+            resolve(DownloadURL);
+          });
+        }
+      )
       
     })
   }
