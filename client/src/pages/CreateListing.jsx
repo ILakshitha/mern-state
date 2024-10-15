@@ -12,12 +12,15 @@ export default function CreateListing() {
     imageUrls: [],
   });
   const [imageuploadError, setImageUploadError] = useState(null)
+  const [uploading,setUploading]= useState(false);
   //console.log(files);
   const handleImageSubmit = async (e) => {
     if (files.length < 1) {
       setImageUploadError('you have not selected images')
 
     } else if (files.length > 0 && files.length < 7) {
+      setUploading(true);
+      setImageUploadError(false);
       const promises = [];
 
       for (let i = 0; i < files.length; i++) {
@@ -29,6 +32,7 @@ export default function CreateListing() {
 
         });
         setImageUploadError(false)
+        setUploading(false)
       }).catch((err) => {
         setImageUploadError("Image Upload Failed (2Mb max per image)");
       }
@@ -37,6 +41,7 @@ export default function CreateListing() {
 
     } else {
       setImageUploadError('you can only upload 6 images per listing')
+      setUploading(false)
     }
 
   }
@@ -159,14 +164,16 @@ export default function CreateListing() {
             <input onChange={(e) => setfiles(e.target.files)} className='p-3 border borderr-gray-300 rounded w-full'
               type='file' id='images' accept='image/*' multiple />
             <button onClick={handleImageSubmit} className='p-3 text-green-400 border border-green-700
-            rounded uppercase hover:shadow-lg disabled:opacity-80'>Upload</button>
+            rounded uppercase hover:shadow-lg disabled:opacity-80'>
+            {uploading? 'Uploading...': 'Upload'}
+            </button>
           </div>
           <p className='text-red-500'>{imageuploadError}</p>
           {
             Formdata.imageUrls.length > 0 && Formdata.imageUrls.map((url,index) => (
               <div key={url}>
                 <img src={url} alt='listing image' className='w-20 h-20 object-contain rounded-lg' />
-                <button type='button' onClick={()=>{handleRemoveImage(index)}}  className='p-3 text-red-500 rounded-lg uppercase hover:opacity-90'>Delete</button>
+                <button type='button' disabled={uploading} onClick={()=>{handleRemoveImage(index)}}  className='p-3 text-red-500 rounded-lg uppercase hover:opacity-90'>Delete</button>
               </div>
             ))
           }
