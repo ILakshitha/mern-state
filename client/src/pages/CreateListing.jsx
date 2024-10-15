@@ -68,6 +68,12 @@ export default function CreateListing() {
     })
   }
 
+  const handleRemoveImage = (index =>{
+    setFormdata({
+      ...Formdata,imageUrls:Formdata.imageUrls.filter((_,i) => i !==index
+    )})
+  })
+
 
   return (
     <main className='p-3 max-w-4xl mx-auto'>
@@ -157,10 +163,10 @@ export default function CreateListing() {
           </div>
           <p className='text-red-500'>{imageuploadError}</p>
           {
-            Formdata.imageUrls.length > 0 && Formdata.imageUrls.map((url) => (
-              <div>
+            Formdata.imageUrls.length > 0 && Formdata.imageUrls.map((url,index) => (
+              <div key={url}>
                 <img src={url} alt='listing image' className='w-20 h-20 object-contain rounded-lg' />
-                <button type='button'  className='p-3 text-red-500 rounded-lg uppercase hover:opacity-90'>Delete</button>
+                <button type='button' onClick={()=>{handleRemoveImage(index)}}  className='p-3 text-red-500 rounded-lg uppercase hover:opacity-90'>Delete</button>
               </div>
             ))
           }
