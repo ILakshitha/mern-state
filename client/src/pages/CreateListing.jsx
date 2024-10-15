@@ -10,10 +10,26 @@ export default function CreateListing() {
   const [files, setfiles] = useState([]);
   const [Formdata, setFormdata] = useState({
     imageUrls: [],
+    name:'',
+    description:'',
+    address:'',
+    type:'',
+    bedrooms:1,
+    bathrooms:1,
+    regularprice:50,
+    discountprice:10000000,
+    offer:false,
+    parking:false,
+    furnished: false,
+
+
   });
   const [imageuploadError, setImageUploadError] = useState(null)
   const [uploading,setUploading]= useState(false);
   //console.log(files);
+
+
+
   const handleImageSubmit = async (e) => {
     if (files.length < 1) {
       setImageUploadError('you have not selected images')
@@ -80,46 +96,52 @@ export default function CreateListing() {
   })
 
 
+  const handleChange = (e)=>{
+
+  }
+
+
   return (
     <main className='p-3 max-w-4xl mx-auto'>
       <h1 className='text-center text-3xl font-semibold m-7'>Create Listing</h1>
       <form className='flex flex-col sm:flex-row gap-4'>
         <div className='flex flex-col gap-4 flex-1'>
-          <input type='text' placeholder='Name' className='border p-3 rounded-lg'
-            id='name' maxLength="62" minLength="10" required />
 
-          <input type='text' placeholder='Description' className='border p-3 rounded-lg'
-            id='Description' required />
+          <input type='text' placeholder='Name' className='border p-3 rounded-lg'
+            id='name' maxLength="62" minLength="10" required onChange={handleChange} value={Formdata.name} />
+
+          <textarea type='text' placeholder='Description' className='border p-3 rounded-lg'
+            id='Description' required onChange={handleChange} value={Formdata.description}/>
 
           <input type='text' placeholder='Address' className='border p-3 rounded-lg'
-            id='Address' required />
+            id='Address' required onChange={handleChange} value={Formdata.address}/>
           <div className='flex gap-6 flex-wrap'>
             <div className='flex gap-2'>
-              <input type='checkbox' id="sale" className='w-5' />
+              <input type='checkbox' id="sale" className='w-5' onChange={handleChange} checked={Formdata.type === 'sale'}/>
               <span>Sell</span>
 
             </div>
 
             <div className='flex gap-2'>
-              <input type='checkbox' id="rent" className='w-5' />
+              <input type='checkbox' id="rent" className='w-5' onChange={handleChange} checked={Formdata.type === 'rent'}/>
               <span>Rent</span>
 
             </div>
 
             <div className='flex gap-2'>
-              <input type='checkbox' id="parking spot" className='w-5' />
+              <input type='checkbox' id="parking spot" className='w-5' onChange={handleChange} checked={Formdata.parking}/>
               <span>Parking Spot</span>
 
             </div>
 
             <div className='flex gap-2'>
-              <input type='checkbox' id="finished" className='w-5' />
+              <input type='checkbox' id="finished" className='w-5' onChange={handleChange} checked={Formdata.furnished} />
               <span>Finished</span>
 
             </div>
 
             <div className='flex gap-2'>
-              <input type='checkbox' id="offer" className='w-5' />
+              <input type='checkbox' id="offer" className='w-5' onChange={handleChange} checked={Formdata.offer}/>
               <span>Offer</span>
 
             </div>
@@ -128,17 +150,17 @@ export default function CreateListing() {
 
           <div className='flex flex-wrap gap-6'>
             <div className='flex items-center gap-2'>
-              <input type='number' id='bedrooms' min="1" max="10" required className='p-3 border border-gray-300 rounded-lg' />
+              <input type='number' id='bedrooms' min="1" max="10" required className='p-3 border border-gray-300 rounded-lg' onChange={handleChange} value={Formdata.bedrooms}/>
               <span>Beds</span>
             </div>
 
             <div className='flex items-center gap-2'>
-              <input type='number' id='bathrooms' min="1" max="10" required className='p-3 border border-gray-300 rounded-lg' />
+              <input type='number' id='bathrooms' min="1" max="10" required className='p-3 border border-gray-300 rounded-lg' onChange={handleChange} value={Formdata.bathrooms}/>
               <span>Baths</span>
             </div>
 
             <div className='flex items-center gap-2'>
-              <input type='number' id='regularprice' required className='p-3 border border-gray-300 rounded-lg' />
+              <input type='number' id='regularprice' required className='p-3 border border-gray-300 rounded-lg' onChange={handleChange} value={Formdata.regularprice}/>
               <div className='flex flex-col items-center'>
                 <p>Regular Price</p>
                 <span className='text-sm'>($/month)</span>
@@ -146,7 +168,7 @@ export default function CreateListing() {
 
             </div>
             <div className='flex items-center gap-2'>
-              <input type='number' id='regularprice' required className='p-3 border border-gray-300 rounded-lg' />
+              <input type='number' id='regularprice' required className='p-3 border border-gray-300 rounded-lg' onChange={handleChange} value={Formdata.discountprice}/>
               <div className='flex flex-col items-center'>
                 <p>Discount Price</p>
                 <span className='text-sm'>($/month)</span>
