@@ -36,10 +36,7 @@ export default function CreateListing() {
 
 
   const handleImageSubmit = async (e) => {
-    if (files.length < 1) {
-      setImageUploadError('you have not selected images')
-
-    } else if (files.length > 0 && files.length < 7) {
+     if (files.length > 0 && files.length < 7) {
       setUploading(true);
       setImageUploadError(false);
       const promises = [];
@@ -126,6 +123,14 @@ export default function CreateListing() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (files.length < 1) {
+      setImageUploadError('you have not selected images')
+
+    }
+    if(+Formdata.regularPrice< +Formdata.discountPrice){
+      return setError("Discount Price Must be Lower than Regular Price")
+    }
+
     try {
       setLoading(true)
       setError(false)
