@@ -6,6 +6,7 @@ import {
 } from 'firebase/storage';
 import { app } from '../firebase';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 export default function CreateListing() {
   const [files, setfiles] = useState([]);
@@ -29,7 +30,8 @@ export default function CreateListing() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false)
-  const { currentUser } = useSelector(state => state.user)
+  const { currentUser } = useSelector(state => state.user);
+  const navigate = useNavigate();
 
   //console.log(files);
 
@@ -154,7 +156,7 @@ export default function CreateListing() {
       const data = await res.json();
       setLoading(false)
 
-
+     navigate(`listing/${data._id}`)
     } catch (error) {
       setError(error.message || 'An unexpected error occurred');
     setLoading(false);
@@ -229,6 +231,9 @@ export default function CreateListing() {
               </div>
 
             </div>
+
+            {Formdata.offer && (
+
             <div className='flex items-center gap-2'>
               <input type='number' id='discountPrice' required className='p-3 border border-gray-300 rounded-lg' onChange={handleChange} value={Formdata.discountPrice} />
               <div className='flex flex-col items-center'>
@@ -237,6 +242,7 @@ export default function CreateListing() {
               </div>
 
             </div>
+            )}
 
           </div>
         </div>
