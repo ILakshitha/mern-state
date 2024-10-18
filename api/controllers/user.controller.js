@@ -55,6 +55,8 @@ export const getUserListing = async(req,res,next)=>{
         } catch (error) {
             next(error)
         }
+    }else{
+        return next(errorHandler(401,"You can only view your Own listing only!!"))
     }
 }
 
