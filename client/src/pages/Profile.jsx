@@ -15,6 +15,7 @@ export default function Profile() {
   const [fileUploadError, setFileUploadError] = useState(false);
   const [updateSuccess,setUpdateSuccess] = useState(false);
   const [formData,setFormData]= useState({});
+  const [showListingError,setShowListingError]=useState(false)
   const dispatch = useDispatch();
 
   
@@ -115,6 +116,25 @@ const handleSignOut = async() =>{
     dispatch(deleteUserFailure(data.message));
   }
 }
+
+const handleShowListing =async()=>{
+try {
+  setShowListingError(false);
+  const res= await fetch(`/api/user/listings/${currentUser._id}`)
+  const data = await res.json()
+
+  if (data.success === false) {
+    setShowListingError(true);
+    return;
+  }
+  
+} catch (error) {
+  setShowListingError(true);
+  
+}
+}
+console.log(currentUser._id);
+
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>profile</h1>
@@ -164,6 +184,10 @@ const handleSignOut = async() =>{
       <p className='text-red-700 mt-5'>{error ? error : ''}</p>
       <p className='text-green-700 mt-5'>
         {updateSuccess ? 'User is updated successfully!' : ''}
+      </p>
+      <button onClick={handleShowListing}>Show Listing</button>
+      <p>
+        {showListingError ? 'Error show Listings':''}
       </p>
 
     </div>

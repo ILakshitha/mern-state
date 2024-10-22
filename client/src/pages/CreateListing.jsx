@@ -143,7 +143,7 @@ export default function CreateListing() {
         },
         body: JSON.stringify({
           ...Formdata,
-          userRef: currentUser._id
+          userRef: currentUser._id,
         }),
       });
       if(!res.ok){
