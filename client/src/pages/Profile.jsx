@@ -135,7 +135,6 @@ try {
   
 }
 }
-console.log(currentUser._id);
 
   return (
     <div className='p-3 max-w-lg mx-auto'>
@@ -191,7 +190,7 @@ console.log(currentUser._id);
       <p>
         {showListingError ? 'Error show Listings':''}
       </p>
-      {userListing && userListing.length >0 && userListing.map((listing)=>{
+      {userListing && userListing.length > 0 && userListing.map((listing)=>{
         <div>
           <Link to={`/listing/${listing._id}`}>
           <img src={listing.img} alt="listig image" />
