@@ -15,6 +15,8 @@ export default function Profile() {
   const [fileUploadError, setFileUploadError] = useState(false);
   const [updateSuccess,setUpdateSuccess] = useState(false);
   const [formData,setFormData]= useState({});
+  const [userListing,setUserListing] = useState([]);
+  const [showListingError,setShowListingError]=useState(false)
   const dispatch = useDispatch();
 
   
@@ -115,6 +117,25 @@ const handleSignOut = async() =>{
     dispatch(deleteUserFailure(data.message));
   }
 }
+
+const handleShowListing =async()=>{
+try {
+  setShowListingError(false);
+  const res= await fetch(`/api/user/listings/${currentUser._id}`)
+  const data = await res.json()
+
+  if (data.success === false) {
+    setShowListingError(true);
+    return;
+  }
+  setUserListing(data);
+  
+} catch (error) {
+  setShowListingError(true);
+  
+}
+}
+
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>profile</h1>
@@ -165,6 +186,26 @@ const handleSignOut = async() =>{
       <p className='text-green-700 mt-5'>
         {updateSuccess ? 'User is updated successfully!' : ''}
       </p>
+      <button onClick={handleShowListing}>Show Listing</button>
+      <p>
+        {showListingError ? 'Error show Listings':''}
+      </p>
+      {userListing && userListing.length > 0 && userListing.map((listing)=>{
+        <div>
+          <Link to={`/listing/${listing._id}`}>
+          <img src={listing.img} alt="listig image" />
+          </Link>
+          <Link to={`/listing/${listing._id}`}>
+          <p className='text-slate-600'>{listing.name}</p>
+          </Link>
+          <div className='flex flex-col items-center'>
+            <button className='text-red-600'>Delete</button>
+            <button className='text-green-600'>Edit</button>
+          </div>
+
+        </div>
+
+      })}
 
     </div>
   )
