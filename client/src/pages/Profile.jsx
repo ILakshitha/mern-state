@@ -15,6 +15,7 @@ export default function Profile() {
   const [fileUploadError, setFileUploadError] = useState(false);
   const [updateSuccess,setUpdateSuccess] = useState(false);
   const [formData,setFormData]= useState({});
+  const [userListing,setUserListing] = useState([]);
   const [showListingError,setShowListingError]=useState(false)
   const dispatch = useDispatch();
 
@@ -127,6 +128,7 @@ try {
     setShowListingError(true);
     return;
   }
+  setUserListing(data);
   
 } catch (error) {
   setShowListingError(true);
@@ -189,6 +191,22 @@ console.log(currentUser._id);
       <p>
         {showListingError ? 'Error show Listings':''}
       </p>
+      {userListing && userListing.length >0 && userListing.map((listing)=>{
+        <div>
+          <Link to={`/listing/${listing._id}`}>
+          <img src={listing.img} alt="listig image" />
+          </Link>
+          <Link to={`/listing/${listing._id}`}>
+          <p className='text-slate-600'>{listing.name}</p>
+          </Link>
+          <div className='flex flex-col items-center'>
+            <button className='text-red-600'>Delete</button>
+            <button className='text-green-600'>Edit</button>
+          </div>
+
+        </div>
+
+      })}
 
     </div>
   )
